@@ -20,17 +20,6 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
-// حل مشكلة الـ Namespace للمكتبات القديمة
-subprojects {
-    plugins.withType<com.android.build.gradle.api.AndroidBasePlugin> {
-        project.extensions.configure<com.android.build.gradle.BaseExtension> {
-            if (namespace == null) {
-                namespace = "com.example.generated.${project.name}"
-            }
-        }
-    }
-}
-
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }
