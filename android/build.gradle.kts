@@ -15,13 +15,17 @@ subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 }
+
 subprojects {
     project.evaluationDependsOn(":app")
-    afterEvaluate {
-        if (project.hasProperty("android")) {
-            val android = project.extensions.getByName("android") as com.android.build.gradle.BaseExtension
-            if (android.namespace == null) {
-                android.namespace = "com.example.generated.${project.name}"
+}
+
+// حل مشكلة الـ Namespace للمكتبات القديمة
+subprojects {
+    plugins.withType<com.android.build.gradle.api.AndroidBasePlugin> {
+        project.extensions.configure<com.android.build.gradle.BaseExtension> {
+            if (namespace == null) {
+                namespace = "com.example.generated.${project.name}"
             }
         }
     }
